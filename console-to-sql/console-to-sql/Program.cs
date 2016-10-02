@@ -11,7 +11,8 @@ namespace console_to_sql
     {
         static void Main(string[] args)
         {
-            using (var connection = new SqlConnection("data source=(localdb)\\mssqllocaldb; database=StarWars"))
+            var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["StarWarsJediMindTrick"].ConnectionString;
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
                 using (var cmd = connection.CreateCommand())
@@ -31,6 +32,7 @@ namespace console_to_sql
                     }
                 }
             }
+            Console.WriteLine("Yo, Press a Key");
             Console.ReadKey();
         }
     }
