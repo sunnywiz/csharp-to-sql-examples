@@ -11,29 +11,18 @@ namespace console_to_sql
     {
         static void Main(string[] args)
         {
-            var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["StarWarsJediMindTrick"].ConnectionString;
-            using (var connection = new SqlConnection(connectionString))
+            var persons = PersonRepository.GetAllPersons();
+            foreach (var person in persons)
             {
-                connection.Open();
-                using (var cmd = connection.CreateCommand())
-                {
-                    cmd.CommandText = "select PersonId, Name, HeightInMeters from Person";
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var personID = reader.GetInt32(0);
-                            var name = reader.GetString(1);
-                            decimal? height;
-                            if (reader.IsDBNull(2)) height = null; else  height = reader.GetDecimal(2);
+                Console.WriteLine("{0}: {1} {2}m",
+                    person.PersonID,
+                    person.Name,
+                    person.HeightInMeters);
 
-                            Console.WriteLine("{0}: {1} {2}m", personID, name, height);
-                        }
-                    }
-                }
             }
-            Console.WriteLine("Yo, Press a Key");
+            Console.WriteLine("Press Any Key To Continue");
             Console.ReadKey();
         }
+
     }
 }
